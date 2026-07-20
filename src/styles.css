@@ -112,3 +112,10 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
 }
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
