@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RulesRouteImport } from './routes/rules'
+import { Route as RecoverRouteImport } from './routes/recover'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckHandleRouteImport } from './routes/check.$handle'
 
@@ -22,6 +23,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const RulesRoute = RulesRouteImport.update({
   id: '/rules',
   path: '/rules',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecoverRoute = RecoverRouteImport.update({
+  id: '/recover',
+  path: '/recover',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,12 +43,14 @@ const CheckHandleRoute = CheckHandleRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/recover': typeof RecoverRoute
   '/rules': typeof RulesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/check/$handle': typeof CheckHandleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/recover': typeof RecoverRoute
   '/rules': typeof RulesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/check/$handle': typeof CheckHandleRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/recover': typeof RecoverRoute
   '/rules': typeof RulesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/check/$handle': typeof CheckHandleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/rules' | '/sitemap.xml' | '/check/$handle'
+  fullPaths: '/' | '/recover' | '/rules' | '/sitemap.xml' | '/check/$handle'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/rules' | '/sitemap.xml' | '/check/$handle'
-  id: '__root__' | '/' | '/rules' | '/sitemap.xml' | '/check/$handle'
+  to: '/' | '/recover' | '/rules' | '/sitemap.xml' | '/check/$handle'
+  id:
+    | '__root__'
+    | '/'
+    | '/recover'
+    | '/rules'
+    | '/sitemap.xml'
+    | '/check/$handle'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RecoverRoute: typeof RecoverRoute
   RulesRoute: typeof RulesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   CheckHandleRoute: typeof CheckHandleRoute
@@ -85,6 +101,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RulesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/recover': {
+      id: '/recover'
+      path: '/recover'
+      fullPath: '/recover'
+      preLoaderRoute: typeof RecoverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RecoverRoute: RecoverRoute,
   RulesRoute: RulesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   CheckHandleRoute: CheckHandleRoute,
