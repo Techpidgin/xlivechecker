@@ -77,14 +77,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "xlivechecker - X monetization & shadowban risk scanner" },
+      {
+        name: "description",
+        content:
+          "Scan your X account against the 2026 X creator rules. Detect engagement farming, reposts, undisclosed promos and shadowban risk in seconds.",
+      },
+      { property: "og:title", content: "xlivechecker" },
+      {
+        property: "og:description",
+        content: "Live risk scanner for X monetization, shadowbans and account suspensions.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
