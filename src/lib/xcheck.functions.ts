@@ -99,23 +99,45 @@ function fmtDay(d: Date): string {
 }
 
 async function fetchTimeline(handle: string): Promise<{ tweets: Tweet[]; user: any; source: string; warning: string | null }> {
-  const url = `https://syndication.twitter.com/srv/timeline-profile/screen-name/${encodeURIComponent(handle)}`;
-  const res = await fetch(url, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
-      Accept: "text/html,application/xhtml+xml",
-    },
-  });
-  if (!res.ok) {
-    throw new Error(`Could not reach X for @${handle} (status ${res.status}). The account may be private, suspended, or the handle is misspelled.`);
+  const target = `https://syndication.twitter.com/srv/timeline-profile/screen-name/${encodeURIComponent(handle)}`;
+  const attempts = [
+    { url: target, source: "syndication.twitter.com" },
+    { url: `https://r.jina.ai/${target}`, source: "r.jina.ai (free reader proxy)" },
+  ];
+  let lastStatus = 0;
+  let html = "";
+  let source = "";
+  for (const a of attempts) {
+    try {
+      const res = await fetch(a.url, {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+          Accept: "text/html,application/xhtml+xml",
+          "X-Return-Format": "html",
+        },
+      });
+      lastStatus = res.status;
+      if (!res.ok) continue;
+      const body = await res.text();
+      if (!body.includes("__NEXT_DATA__")) continue;
+      html = body;
+      source = a.source;
+      break;
+    } catch {
+      // try next fallback
+    }
   }
-  const html = await res.text();
+  if (!html) {
+    throw new Error(
+      `Could not reach X for @${handle} (last status ${lastStatus}). X is rate-limiting datacenter IPs — try again in a minute, or the handle may be misspelled.`,
+    );
+  }
   const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
   if (!m) throw new Error("Could not parse X profile response.");
   const data = JSON.parse(m[1]);
   const entries = data?.props?.pageProps?.timeline?.entries ?? [];
-  let user: any = null;
+  let user: any = data?.props?.pageProps?.user ?? null;
   const tweets: Tweet[] = [];
   for (const e of entries) {
     const tw = e?.content?.tweet;
@@ -139,15 +161,15 @@ async function fetchTimeline(handle: string): Promise<{ tweets: Tweet[]; user: a
     });
   }
   if (!user) {
-    throw new Error(`No public posts found for @${handle}. The account may be new, private, or protected.`);
+    throw new Error(`No public data returned for @${handle}. The account may be new, private, or protected.`);
   }
   return {
     tweets,
     user,
-    source: "syndication.twitter.com (public embed)",
+    source,
     warning:
       tweets.length < 15
-        ? "Public embed returned a limited sample. Risk scoring is directional; connect a full X API for precision."
+        ? "Public timeline returned a limited sample. Risk scoring is directional but based on real posts."
         : null,
   };
 }
