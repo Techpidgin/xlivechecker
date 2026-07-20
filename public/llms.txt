@@ -1,0 +1,6 @@
+# xlivechecker
+
+> Free risk scanner for X (Twitter) accounts. Detects demonetization, shadowban and suspension risk under the 2026 X creator rules.
+
+## Pages
+- [Home](/): Scan any X handle for monetization and shadowban risk
