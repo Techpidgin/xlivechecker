@@ -77,19 +77,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "xlivechecker - X monetization & shadowban risk scanner" },
+      { title: "xlivechecker | X monetization risk & shadowban scanner" },
       {
         name: "description",
         content:
-          "Scan your X account against the 2026 X creator rules. Detect engagement farming, reposts, undisclosed promos and shadowban risk in seconds.",
+          "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm.",
       },
-      { property: "og:title", content: "xlivechecker" },
+      { property: "og:title", content: "xlivechecker | X monetization risk & shadowban scanner" },
       {
         property: "og:description",
-        content: "Live risk scanner for X monetization, shadowbans and account suspensions.",
+        content: "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "xlivechecker | X monetization risk & shadowban scanner" },
+      { name: "twitter:description", content: "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/hEZM2cHlTGMD3NtlUYE6ZJZ77wq2/social-images/social-1784532285252-Fh2HNw5Y_400x400.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/hEZM2cHlTGMD3NtlUYE6ZJZ77wq2/social-images/social-1784532285252-Fh2HNw5Y_400x400.webp" },
     ],
     links: [
       {

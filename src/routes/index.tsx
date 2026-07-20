@@ -12,10 +12,10 @@ export const Route = createFileRoute("/")({
         content:
           "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm.",
       },
-      { property: "og:title", content: "xlivechecker" },
+      { property: "og:title", content: "xlivechecker | X monetization risk & shadowban scanner" },
       {
         property: "og:description",
-        content: "Live risk scanner for X monetization, shadowbans and account suspensions.",
+        content: "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
