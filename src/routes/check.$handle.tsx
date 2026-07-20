@@ -31,6 +31,7 @@ import {
   Zap,
 } from "lucide-react";
 import { analyzeHandle, type AnalysisResult, type RiskFlag } from "@/lib/xcheck.functions";
+import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/check/$handle")({
   head: ({ params }) => ({
