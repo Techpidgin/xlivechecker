@@ -14,7 +14,7 @@ export function SiteHeader() {
     <header className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-6">
       <Link to="/" className="flex items-center gap-2.5">
         <img
-          src={logoAsset.url}
+          src="/newlogo.png"
           alt="xlivechecker"
           className="h-9 w-9 rounded-full border border-border object-cover"
         />
