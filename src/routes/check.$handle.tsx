@@ -31,6 +31,7 @@ import {
   Zap,
 } from "lucide-react";
 import { analyzeHandle, type AnalysisResult, type RiskFlag } from "@/lib/xcheck.functions";
+import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/check/$handle")({
   head: ({ params }) => ({
@@ -57,48 +58,44 @@ function CheckPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <TopBar currentHandle={handle} />
+      <SiteHeader />
+      <ReCheckBar currentHandle={handle} />
       <main className="mx-auto max-w-6xl px-6 pb-24">
         {q.isPending && <LoadingState handle={handle} />}
         {q.isError && <ErrorState message={(q.error as Error).message} handle={handle} />}
         {q.data && <Results data={q.data} />}
       </main>
+      <SiteFooter />
     </div>
   );
 }
 
-function TopBar({ currentHandle }: { currentHandle: string }) {
+function ReCheckBar({ currentHandle }: { currentHandle: string }) {
   const [handle, setHandle] = useState(currentHandle);
   const navigate = useNavigate();
   return (
-    <header className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
-      <Link to="/" className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <Zap className="h-4 w-4" strokeWidth={2.5} />
-        </div>
-        <span className="text-sm font-semibold tracking-tight">xlivechecker</span>
-      </Link>
+    <div className="mx-auto max-w-6xl px-6 pb-2">
       <form
         onSubmit={(e) => {
           e.preventDefault();
           const clean = handle.trim().replace(/^@/, "");
           if (clean) navigate({ to: "/check/$handle", params: { handle: clean } });
         }}
-        className="flex flex-1 items-center gap-2 sm:max-w-md"
+        className="flex items-center gap-2"
       >
-        <div className="relative flex-1">
+        <div className="relative flex-1 sm:max-w-md">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             value={handle}
             onChange={(e) => setHandle(e.target.value)}
-            className="h-10 w-full rounded-xl border border-border bg-card pl-9 pr-3 text-sm outline-none focus:border-primary"
+            className="h-10 w-full rounded-full border border-border bg-card pl-9 pr-3 text-sm outline-none focus:border-primary"
           />
         </div>
-        <button className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">
+        <button className="rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">
           Re-check
         </button>
       </form>
-    </header>
+    </div>
   );
 }
 
