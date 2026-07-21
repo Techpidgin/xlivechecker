@@ -11,6 +11,8 @@ const ADS = [
   { img: temu4.url, href: "https://temu.to/k/eyifd4ef19j" },
 ];
 
+const AFFILIATE_URL = "https://temu.to/k/eww5h9vdn97";
+
 export function TemuAdSlider() {
   const [i, setI] = useState(0);
 
@@ -20,12 +22,12 @@ export function TemuAdSlider() {
   }, []);
 
   return (
-    <div className="w-[188px] shrink-0">
-      <div className="mb-1 flex items-center justify-between px-1 text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
+    <div className="group relative w-[376px] shrink-0">
+      <div className="mb-1 flex items-center justify-between px-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
         <span>Sponsored</span>
         <span>Ad</span>
       </div>
-      <div className="relative h-[92px] overflow-hidden rounded-xl border border-border bg-card">
+      <div className="relative h-[184px] overflow-hidden rounded-xl border border-border bg-card">
         {ADS.map((ad, idx) => (
           <a
             key={ad.href}
@@ -47,6 +49,20 @@ export function TemuAdSlider() {
             />
           </a>
         ))}
+
+        <a
+          href={AFFILIATE_URL}
+          target="_blank"
+          rel="sponsored noopener noreferrer"
+          className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-background/95 px-3 py-2 text-[10px] leading-tight backdrop-blur transition-transform duration-300 group-hover:translate-y-0 focus:translate-y-0"
+        >
+          <div className="font-semibold uppercase tracking-wider text-primary">
+            Become an affiliate
+          </div>
+          <div className="text-muted-foreground">
+            Invite one person and get $11. Tap to join.
+          </div>
+        </a>
       </div>
       <div className="mt-1.5 flex items-center justify-center gap-1">
         {ADS.map((_, idx) => (
