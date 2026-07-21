@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import temu1 from "@/assets/temu-1.png.asset.json";
-import temu2 from "@/assets/temu-2.png.asset.json";
-import temu3 from "@/assets/temu-3.png.asset.json";
-import temu4 from "@/assets/temu-4.png.asset.json";
 
 const ADS = [
-  { img: temu1.url, href: "https://temu.to/k/emxmibwsg5o" },
-  { img: temu2.url, href: "https://temu.to/k/ew9fr5mzld9" },
-  { img: temu3.url, href: "https://temu.to/k/emwywlaob6a" },
-  { img: temu4.url, href: "https://temu.to/k/eyifd4ef19j" },
+  { img: "/Temu1.png", href: "https://temu.to/k/emxmibwsg5o" },
+  { img: "/Temu2.png", href: "https://temu.to/k/ew9fr5mzld9" },
+  { img: "/Temu3.png", href: "https://temu.to/k/emwywlaob6a" },
+  { img: "/Temu4.png", href: "https://temu.to/k/eyifd4ef19j" },
 ];
 
 const AFFILIATE_URL = "https://temu.to/k/eww5h9vdn97";
