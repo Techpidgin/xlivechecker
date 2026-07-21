@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /analytics
+
+Sitemap: https://xlivechecker.lovable.app/sitemap.xml
