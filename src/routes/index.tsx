@@ -2,6 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Search, ArrowRight } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { TemuAdSlider } from "@/components/TemuAdSlider";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
