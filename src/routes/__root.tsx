@@ -97,8 +97,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "xlivechecker | X monetization risk & shadowban scanner" },
       { name: "twitter:description", content: "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/hEZM2cHlTGMD3NtlUYE6ZJZ77wq2/social-images/social-1784532285252-Fh2HNw5Y_400x400.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/hEZM2cHlTGMD3NtlUYE6ZJZ77wq2/social-images/social-1784532285252-Fh2HNw5Y_400x400.webp" },
+      { property: "og:image", content: "https://xlivechecker.lovable.app/newlogo.png" },
+      { name: "twitter:image", content: "https://xlivechecker.lovable.app/newlogo.png" },
     ],
     links: [
       {
