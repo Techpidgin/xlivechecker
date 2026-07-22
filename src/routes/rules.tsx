@@ -2,21 +2,48 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/rules")({
-  head: () => ({
-    meta: [
-      { title: "The 2026 X monetization rules | xlivechecker" },
-      {
-        name: "description",
-        content:
-          "Every rule the new X algorithm enforces — what it rewards, what pauses payouts, and what triggers shadowban or suspension.",
-      },
-      { property: "og:title", content: "The 2026 X monetization rules" },
-      {
-        property: "og:description",
-        content: "What the new X algorithm rewards, and what triggers demonetization, shadowban or ban.",
-      },
-    ],
-  }),
+  head: () => {
+    const url = "https://xlivechecker.lovable.app/rules";
+    return {
+      meta: [
+        { title: "The 2026 X monetization rules | xlivechecker" },
+        {
+          name: "description",
+          content:
+            "Every rule the new X algorithm enforces — what it rewards, what pauses payouts, and what triggers shadowban or suspension.",
+        },
+        { property: "og:title", content: "The 2026 X monetization rules" },
+        {
+          property: "og:description",
+          content: "What the new X algorithm rewards, and what triggers demonetization, shadowban or ban.",
+        },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              ...REWARDS.map((r) => ({
+                "@type": "Question",
+                name: `What does the 2026 X algorithm reward: ${r.title}?`,
+                acceptedAnswer: { "@type": "Answer", text: r.detail },
+              })),
+              ...TRIGGERS.map((r) => ({
+                "@type": "Question",
+                name: `Does ${r.title} trigger demonetization on X?`,
+                acceptedAnswer: { "@type": "Answer", text: r.detail },
+              })),
+            ],
+          }),
+        },
+      ],
+    };
+  },
   component: RulesPage,
 });
 
