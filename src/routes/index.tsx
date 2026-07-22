@@ -41,15 +41,16 @@ function Home() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
 
-      <div className="pointer-events-none absolute right-4 top-20 z-30 hidden md:block lg:right-8">
+      <div className="pointer-events-none fixed right-3 top-16 z-30 hidden md:block lg:right-6">
         <div className="pointer-events-auto">
           <TemuAdSlider />
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-6xl justify-center px-6 pb-2 md:hidden">
+      <div className="mx-auto flex max-w-6xl justify-center px-4 pb-2 md:hidden">
         <TemuAdSlider />
       </div>
+
 
       <main className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-20 pb-24 text-center sm:pt-28">
 
