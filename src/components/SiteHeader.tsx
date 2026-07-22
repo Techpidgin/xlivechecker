@@ -15,7 +15,7 @@ export function SiteHeader() {
       <Link to="/" className="flex items-center gap-2.5">
         <img
           src="/newlogo.png"
-          alt="xlivechecker"
+          alt="xlivechecker monetization risk scanner logo"
           className="h-9 w-9 rounded-full border border-border object-cover"
         />
         <span className="text-[15px] font-semibold tracking-tight">xlivechecker</span>

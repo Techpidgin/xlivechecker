@@ -8,20 +8,23 @@ import { TemuAdSlider } from "@/components/TemuAdSlider";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "xlivechecker | X monetization risk & shadowban scanner" },
+      { title: "xlivechecker | Scan an X handle for demonetization risk" },
       {
         name: "description",
         content:
-          "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm.",
+          "Free scanner: paste an X handle and see monetization, shadowban and suspension risk under the 2026 X creator rules.",
       },
-      { property: "og:title", content: "xlivechecker | X monetization risk & shadowban scanner" },
+      { property: "og:title", content: "xlivechecker | Scan an X handle for demonetization risk" },
       {
         property: "og:description",
-        content: "Enter your X handle to check demonetization, shadowban and suspension risk under the 2026 X algorithm.",
+        content:
+          "Free scanner: paste an X handle and see monetization, shadowban and suspension risk under the 2026 X creator rules.",
       },
+      { property: "og:url", content: "https://xlivechecker.lovable.app/" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://xlivechecker.lovable.app/" }],
   }),
   component: Home,
 });

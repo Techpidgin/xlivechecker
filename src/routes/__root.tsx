@@ -125,6 +125,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "Scan any X handle for demonetization, shadowban and suspension risk under the 2026 X algorithm.",
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "xlivechecker",
+          url: "https://xlivechecker.lovable.app",
+          logo: "https://xlivechecker.lovable.app/newlogo.png",
+          sameAs: ["https://x.com/mfckr_eth"],
+        }),
+      },
     ],
   }),
 
