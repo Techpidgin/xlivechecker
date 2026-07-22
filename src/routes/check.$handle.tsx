@@ -34,15 +34,26 @@ import { analyzeHandle, type AnalysisResult, type RiskFlag } from "@/lib/xcheck.
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/check/$handle")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `@${params.handle} - X monetization risk | xlivechecker` },
-      {
-        name: "description",
-        content: `Live X monetization, shadowban and suspension risk analysis for @${params.handle} against the 2026 X creator rules.`,
-      },
-    ],
-  }),
+  head: ({ params }) => {
+    const url = `https://xlivechecker.lovable.app/check/${params.handle}`;
+    const title = `@${params.handle} - X monetization risk | xlivechecker`;
+    const description = `Live X monetization, shadowban and suspension risk analysis for @${params.handle} against the 2026 X creator rules.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "profile" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "robots", content: "noindex" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: CheckPage,
 });
 
