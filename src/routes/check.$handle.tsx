@@ -339,7 +339,7 @@ function ChartCard({ title, subtitle, children }: { title: string; subtitle: str
     <div className="card-panel p-6">
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="text-sm font-semibold">{title}</h3>
+          <h2 className="text-sm font-semibold">{title}</h2>
           <p className="text-xs text-muted-foreground">{subtitle}</p>
         </div>
       </div>
@@ -353,7 +353,7 @@ function FlagList({ flags }: { flags: RiskFlag[] }) {
     return (
       <div className="card-panel flex h-full flex-col items-start gap-3 p-6">
         <CheckCircle2 className="h-8 w-8 text-primary" />
-        <h3 className="text-lg font-semibold">No rule triggers detected</h3>
+        <h2 className="text-lg font-semibold">No rule triggers detected</h2>
         <p className="text-sm text-muted-foreground">
           Recent posts look clean against the current monetization rules. Keep publishing original content and stay above 5M
           impressions per month.
@@ -365,7 +365,7 @@ function FlagList({ flags }: { flags: RiskFlag[] }) {
     <div className="card-panel p-6">
       <div className="flex items-center gap-2">
         <AlertTriangle className="h-5 w-5 text-destructive" />
-        <h3 className="text-sm font-semibold uppercase tracking-wider">Rule triggers ({flags.length})</h3>
+        <h2 className="text-sm font-semibold uppercase tracking-wider">Rule triggers ({flags.length})</h2>
       </div>
       <ul className="mt-4 space-y-3">
         {flags.map((f) => (
@@ -403,7 +403,7 @@ function RecoveryPlan({ data }: { data: AnalysisResult }) {
     <div className="card-panel p-6">
       <div className="flex items-center gap-2">
         <ShieldCheck className="h-5 w-5 text-primary" />
-        <h3 className="text-sm font-semibold uppercase tracking-wider">Get back on track</h3>
+        <h2 className="text-sm font-semibold uppercase tracking-wider">Get back on track</h2>
       </div>
       <ol className="mt-4 space-y-3">
         {data.recommendations.map((r, i) => (
@@ -423,7 +423,7 @@ function RecentPosts({ data }: { data: AnalysisResult }) {
   if (data.recentSamples.length === 0) return null;
   return (
     <div className="card-panel p-6">
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Recent posts sampled</h3>
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Recent posts sampled</h2>
       <ul className="mt-4 divide-y divide-border">
         {data.recentSamples.map((t) => (
           <li key={t.id} className="py-4">
