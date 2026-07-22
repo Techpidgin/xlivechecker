@@ -2,21 +2,49 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/recover")({
-  head: () => ({
-    meta: [
-      { title: "Recover your X account | xlivechecker" },
-      {
-        name: "description",
-        content:
-          "Step-by-step recovery playbook for paused, shadowbanned, or suspended X accounts under the 2026 monetization rules.",
-      },
-      { property: "og:title", content: "Recover your X account" },
-      {
-        property: "og:description",
-        content: "Every trick to get monetization, reach and payouts back on your X account.",
-      },
-    ],
-  }),
+  head: () => {
+    const url = "https://xlivechecker.lovable.app/recover";
+    return {
+      meta: [
+        { title: "Recover your X account | xlivechecker" },
+        {
+          name: "description",
+          content:
+            "Step-by-step recovery playbook for paused, shadowbanned, or suspended X accounts under the 2026 monetization rules.",
+        },
+        { property: "og:title", content: "Recover your X account" },
+        {
+          property: "og:description",
+          content: "Every trick to get monetization, reach and payouts back on your X account.",
+        },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "Recover your X account",
+            description:
+              "Four-phase, thirty-day playbook to restore monetization, reach and payouts on a paused, shadowbanned or suspended X account.",
+            step: PHASES.map((p, i) => ({
+              "@type": "HowToStep",
+              position: i + 1,
+              name: p.title,
+              itemListElement: p.steps.map((s, si) => ({
+                "@type": "HowToDirection",
+                position: si + 1,
+                text: s,
+              })),
+            })),
+          }),
+        },
+      ],
+    };
+  },
   component: RecoverPage,
 });
 
