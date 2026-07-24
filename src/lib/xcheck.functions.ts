@@ -424,7 +424,7 @@ function analyze(handle: string, tweets: Tweet[], user: any, source: string, war
     engagementSeries,
     compositionBreakdown,
     recommendations,
-    recentSamples: pool.slice(0, 8),
+    recentSamples: pool.filter((t) => riskyIds.has(t.id)).slice(0, 8),
     dataSource: source,
     warning,
   };
