@@ -202,6 +202,7 @@ function analyze(handle: string, tweets: Tweet[], user: any, source: string, war
   let lowEffort = 0;
   let duplicateGroups = new Map<string, number>();
 
+  const riskyIds = new Set<string>();
   for (const t of pool) {
     if (t.isRetweet) repostCount++;
     else if (t.isReply) replyCount++;
@@ -219,12 +220,23 @@ function analyze(handle: string, tweets: Tweet[], user: any, source: string, war
         if (entry.examples.length < 3) entry.examples.push(t.text.slice(0, 140));
         farmHits.set(label, entry);
         if (label === "low-effort filler post") lowEffort++;
+        riskyIds.add(t.id);
       }
     }
 
-    if (UNDISCLOSED_PROMO.test(t.text) && !HAS_AD_DISCLOSURE.test(t.text)) undisclosedPromo.push(t);
-    if (SENSITIVE_TOPICS.test(t.text) && AI_HINTS.test(t.text)) sensitiveAi.push(t);
-    if (COPYWRITED_HINTS.test(t.text)) copywrited.push(t);
+    if (UNDISCLOSED_PROMO.test(t.text) && !HAS_AD_DISCLOSURE.test(t.text)) { undisclosedPromo.push(t); riskyIds.add(t.id); }
+    if (SENSITIVE_TOPICS.test(t.text) && AI_HINTS.test(t.text)) { sensitiveAi.push(t); riskyIds.add(t.id); }
+    if (COPYWRITED_HINTS.test(t.text)) { copywrited.push(t); riskyIds.add(t.id); }
+  }
+
+  // Flag duplicate posts and reposts as monetization-risk samples
+  const dupNorms = new Set(
+    [...duplicateGroups.entries()].filter(([, n]) => n >= 2).map(([k]) => k),
+  );
+  for (const t of pool) {
+    const norm = t.text.toLowerCase().replace(/https?:\/\/\S+/g, "").replace(/[^a-z0-9 ]/g, "").trim().slice(0, 80);
+    if (dupNorms.has(norm)) riskyIds.add(t.id);
+    if (t.isRetweet) riskyIds.add(t.id);
   }
 
   const duplicates = [...duplicateGroups.values()].filter((n) => n >= 2).reduce((a, b) => a + b, 0);
