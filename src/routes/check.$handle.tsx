@@ -431,10 +431,16 @@ function RecoveryPlan({ data }: { data: AnalysisResult }) {
 }
 
 function RecentPosts({ data }: { data: AnalysisResult }) {
-  if (data.recentSamples.length === 0) return null;
+  if (data.recentSamples.length === 0) return (
+    <div className="card-panel p-6">
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">At-risk posts</h2>
+      <p className="mt-3 text-sm text-muted-foreground">No posts in the last {data.windowDays} days matched X's demonetization or suspension triggers. Keep publishing original content.</p>
+    </div>
+  );
   return (
     <div className="card-panel p-6">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Recent posts sampled</h2>
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">At-risk posts (policy violations)</h2>
+      <p className="mt-1 text-xs text-muted-foreground">Only posts flagged under X's monetization rules — engagement farming, reposts, duplicates, undisclosed promos, sensitive AI content, or copyrighted material.</p>
       <ul className="mt-4 divide-y divide-border">
         {data.recentSamples.map((t) => (
           <li key={t.id} className="py-4">
