@@ -100,47 +100,61 @@ function fmtDay(d: Date): string {
 
 async function fetchTimeline(handle: string): Promise<{ tweets: Tweet[]; user: any; source: string; warning: string | null }> {
   const target = `https://syndication.twitter.com/srv/timeline-profile/screen-name/${encodeURIComponent(handle)}`;
-  const attempts: { url: string; source: string }[] = [
+  const etarget = encodeURIComponent(target);
+  // Rotated pool of free read-through proxies. X's syndication endpoint 403s
+  // Cloudflare Worker IPs directly, so we route through providers with
+  // residential/edge egress. Order matters: cheapest/most reliable first.
+  const attempts: { url: string; source: string; headers?: Record<string, string> }[] = [
     { url: target, source: "syndication.twitter.com" },
-    { url: `https://api.cors.lol/?url=${encodeURIComponent(target)}`, source: "api.cors.lol" },
-    { url: `https://proxy.cors.sh/${target}`, source: "proxy.cors.sh" },
-    { url: `https://r.jina.ai/${target}`, source: "r.jina.ai" },
+    { url: `https://api.allorigins.win/raw?url=${etarget}`, source: "allorigins.win" },
+    { url: `https://corsproxy.io/?url=${etarget}`, source: "corsproxy.io" },
+    { url: `https://api.codetabs.com/v1/proxy/?quest=${etarget}`, source: "codetabs.com" },
+    { url: `https://api.cors.lol/?url=${etarget}`, source: "api.cors.lol", headers: { "x-cors-api-key": "temp_public" } },
+    { url: `https://proxy.cors.sh/${target}`, source: "proxy.cors.sh", headers: { "x-cors-api-key": "temp_public" } },
+    { url: `https://r.jina.ai/${target}`, source: "r.jina.ai", headers: { "X-Return-Format": "html" } },
   ];
-  let lastStatus = 0;
-  let lastReason = "";
+  const failures: string[] = [];
   let html = "";
   let source = "";
   for (const a of attempts) {
-    try {
-      const res = await fetch(a.url, {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
-          Accept: "text/html,application/xhtml+xml",
-          "X-Return-Format": "html",
-          "x-cors-api-key": "temp_public",
-        },
-      });
-      lastStatus = res.status;
-      if (!res.ok) {
-        lastReason = `${a.source} → ${res.status}`;
-        continue;
+    // Small per-provider retry on transient 429s.
+    for (let attempt = 0; attempt < 2 && !html; attempt++) {
+      try {
+        const res = await fetch(a.url, {
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+            Accept: "text/html,application/xhtml+xml",
+            ...(a.headers ?? {}),
+          },
+          signal: AbortSignal.timeout(12000),
+        });
+        if (!res.ok) {
+          failures.push(`${a.source}:${res.status}`);
+          if (res.status === 429 && attempt === 0) {
+            await new Promise((r) => setTimeout(r, 800));
+            continue;
+          }
+          break;
+        }
+        const body = await res.text();
+        if (!body.includes("__NEXT_DATA__")) {
+          failures.push(`${a.source}:no-payload`);
+          break;
+        }
+        html = body;
+        source = a.source;
+        break;
+      } catch (err) {
+        failures.push(`${a.source}:${(err as Error).name}`);
+        break;
       }
-      const body = await res.text();
-      if (!body.includes("__NEXT_DATA__")) {
-        lastReason = `${a.source} → no timeline payload`;
-        continue;
-      }
-      html = body;
-      source = a.source;
-      break;
-    } catch (err) {
-      lastReason = `${a.source} → ${(err as Error).message}`;
     }
+    if (html) break;
   }
   if (!html) {
     throw new Error(
-      `Could not reach X for @${handle} right now (${lastReason || `status ${lastStatus}`}). X's public timeline endpoints are rate-limiting — please retry in a minute. If it keeps failing, double-check the handle spelling.`,
+      `Could not reach X for @${handle}. All public read paths are blocked or rate-limited right now (${failures.join(", ")}). Wait 60s and retry; if it keeps failing the handle may be misspelled, private, or suspended.`,
     );
   }
   const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
